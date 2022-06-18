@@ -1,9 +1,10 @@
 const Pet = require('../models/Pet');
 const User = require('../models/User');
+const Institution = require('../models/Institution');
 
 const getAllPets = async (req, res) => {
   const pet = await Pet.find({})
-    .populate('user', { uploadedPets: 0, adoptedPets: 0 })
+    .populate('institution', { uploadedPets: 0, adoptedPets: 0 })
     .populate('owner', { uploadedPets: 0, adoptedPets: 0 });
 
   res.json(pet);
@@ -21,7 +22,7 @@ const registerPet = async (req, res, next) => {
   const content = req.body;
   const { userId } = req;
 
-  const user = await User.findById(userId);
+  const institution = await Institution.findById(userId);
 
   if (!content) {
     return res.status(400).json({
@@ -29,13 +30,13 @@ const registerPet = async (req, res, next) => {
     });
   }
 
-  const newPet = new Pet({ ...content, user: user._id });
+  const newPet = new Pet({ ...content, institution: institution._id });
 
   try {
     const savedPet = await newPet.save();
 
-    user.uploadedPets = user.uploadedPets.concat(savedPet._id);
-    await user.save();
+    institution.uploadedPets = institution.uploadedPets.concat(savedPet._id);
+    await institution.save();
 
     res.json(savedPet);
   } catch (err) {
@@ -63,19 +64,22 @@ const adoptPet = async (req, res, next) => {
 
 const modifyPet = (req, res, next) => {
   const { id } = req.params;
-  const { name, age, size, breed, sex, img } = req.body;
+  console.log(id);
+  const { name, born, size, activity, gender, description, img } = req.body;
 
   const newPet = {
     name,
-    age,
+    born,
     size,
-    breed,
-    sex,
+    activity,
+    gender,
+    description,
     img,
   };
 
   Pet.findByIdAndUpdate(id, newPet, { new: true })
     .then((result) => {
+      console.log(result);
       res.json(result);
     })
     .catch(next);

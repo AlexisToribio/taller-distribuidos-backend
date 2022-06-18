@@ -1,6 +1,10 @@
 const { Schema, model } = require('mongoose');
 
 const petSchema = new Schema({
+  codigo: {
+    type: String,
+    require: true,
+  },
   name: {
     type: String,
     required: true,
@@ -8,9 +12,13 @@ const petSchema = new Schema({
     min: 1,
     max: 50,
   },
-  age: {
-    type: Number,
+  born: {
+    type: String,
     required: true,
+  },
+  date: {
+    type: String,
+    require: true,
   },
   size: {
     type: String,
@@ -19,27 +27,32 @@ const petSchema = new Schema({
     min: 1,
     max: 50,
   },
-  breed: {
+  activity: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  gender: {
     type: String,
     required: true,
     trim: true,
     min: 1,
     max: 50,
   },
-  sex: {
+  description: {
     type: String,
-    required: true,
+    require: true,
     trim: true,
     min: 1,
-    max: 50,
+    max: 255,
   },
   img: {
     type: String,
     required: true,
   },
-  user: {
+  institution: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Institution',
   },
   owner: {
     type: Schema.Types.ObjectId,

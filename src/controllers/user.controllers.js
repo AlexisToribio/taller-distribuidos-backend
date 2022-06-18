@@ -1,9 +1,15 @@
 const User = require('../models/User');
+const Institution = require('../models/Institution');
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({})
-    .populate('uploadedPets', { user: 0 })
-    .populate('adoptedPets', { user: 0 });
+  const users = await User.find({}).populate('adoptedPets', { user: 0 });
+  res.json(users);
+};
+
+const getAllInstitution = async (req, res) => {
+  const users = await Institution.find({}).populate('uploadedPets', {
+    user: 0,
+  });
   res.json(users);
 };
 
@@ -12,6 +18,16 @@ const getUserById = async (req, res, next) => {
 
   User.findById(id)
     .then((user) => (user ? res.json(user) : res.status(404).end()))
+    .catch(next);
+};
+
+const getInstitutionById = async (req, res, next) => {
+  const { id } = req.params;
+
+  Institution.findById(id)
+    .then((institution) =>
+      institution ? res.json(institution) : res.status(404).end()
+    )
     .catch(next);
 };
 
@@ -31,6 +47,8 @@ const modifyUser = async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
+  getAllInstitution,
   getUserById,
+  getInstitutionById,
   modifyUser,
 };

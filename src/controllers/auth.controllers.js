@@ -1,9 +1,10 @@
 const User = require('../models/User');
+const Institution = require('../models/Institution');
 const bcrypt = require('bcrypt');
 const env = require('../base/env');
 const jwt = require('jsonwebtoken');
 
-const login = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -32,7 +33,38 @@ const login = async (req, res) => {
   });
 };
 
-const register = async (req, res) => {
+const loginInstitution = async (req, res) => {
+  const { email, password } = req.body;
+
+  const institution = await Institution.findOne({ email });
+
+  const passwordCorrect =
+    institution === null
+      ? false
+      : await bcrypt.compare(password, institution.password);
+
+  if (!(institution && passwordCorrect)) {
+    res.status(401).json({ error: 'invalid email or password' });
+  }
+
+  const userForToken = {
+    id: institution._id,
+    email: institution.email,
+  };
+
+  const token = jwt.sign(userForToken, env.TOP_SECRET, {
+    expiresIn: 60 * 60 * 24 * 7,
+  });
+
+  res.send({
+    firstname: institution.firstname,
+    lastname: institution.lastname,
+    email: institution.email,
+    token,
+  });
+};
+
+const registerUser = async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
 
   saltRounds = 10;
@@ -50,7 +82,27 @@ const register = async (req, res) => {
   res.status(201).json(savedUser);
 };
 
+const registerInstitution = async (req, res) => {
+  const { name, address, email, password } = req.body;
+
+  saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
+
+  const institution = new Institution({
+    name,
+    address,
+    email,
+    password: passwordHash,
+  });
+
+  const savedInstitution = await institution.save();
+
+  res.status(201).json(savedInstitution);
+};
+
 module.exports = {
-  register,
-  login,
+  registerUser,
+  registerInstitution,
+  loginUser,
+  loginInstitution,
 };

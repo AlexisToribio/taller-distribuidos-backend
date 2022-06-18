@@ -24,22 +24,12 @@ const userSchema = new Schema({
     min: 5,
     max: 150,
   },
-  institution: {
-    type: Schema.Types.ObjectId,
-    ref: 'Institution',
-  },
   password: {
     type: String,
     required: true,
     min: 8,
     max: 255,
   },
-  uploadedPets: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Pet',
-    },
-  ],
   adoptedPets: [
     {
       type: Schema.Types.ObjectId,
