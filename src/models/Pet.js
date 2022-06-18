@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const petSchema = new Schema({
-  codigo: {
+  code: {
     type: String,
     required: true,
   },

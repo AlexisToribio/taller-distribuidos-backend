@@ -24,7 +24,6 @@ const registerPet = async (req, res, next) => {
 
   try {
     const institution = await Institution.findById(userId);
-
     if (!content) {
       return res.status(400).json({
         error: 'no content',
