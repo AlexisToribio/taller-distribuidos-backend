@@ -22,17 +22,17 @@ const registerPet = async (req, res, next) => {
   const content = req.body;
   const { userId } = req;
 
-  const institution = await Institution.findById(userId);
-
-  if (!content) {
-    return res.status(400).json({
-      error: 'no content',
-    });
-  }
-
-  const newPet = new Pet({ ...content, institution: institution._id });
-
   try {
+    const institution = await Institution.findById(userId);
+
+    if (!content) {
+      return res.status(400).json({
+        error: 'no content',
+      });
+    }
+
+    const newPet = new Pet({ ...content, institution: institution._id });
+
     const savedPet = await newPet.save();
 
     institution.uploadedPets = institution.uploadedPets.concat(savedPet._id);
