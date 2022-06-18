@@ -3,13 +3,6 @@ const bcrypt = require('bcrypt');
 const env = require('../base/env');
 const jwt = require('jsonwebtoken');
 
-const getAllUsers = async (req, res) => {
-  const users = await User.find({}).populate('pets', {
-    user: 0,
-  });
-  res.json(users);
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -19,7 +12,7 @@ const login = async (req, res) => {
     user === null ? false : await bcrypt.compare(password, user.password);
 
   if (!(user && passwordCorrect)) {
-    res.status(401).json({ error: 'invalid user or password' });
+    res.status(401).json({ error: 'invalid email or password' });
   }
 
   const userForToken = {
@@ -40,7 +33,6 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  console.log(req);
   const { firstname, lastname, email, password } = req.body;
 
   saltRounds = 10;
@@ -59,7 +51,6 @@ const register = async (req, res) => {
 };
 
 module.exports = {
-  getAllUsers,
   register,
   login,
 };

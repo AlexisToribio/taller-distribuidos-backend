@@ -9,15 +9,18 @@ const getAllPets = async (req, res) => {
   res.json(pet);
 };
 
-const getPetById = (req, res) => {
+const getPetById = (req, res, next) => {
   const { id } = req.params;
 
   Pet.findById(id)
     .then((pet) => (pet ? res.json(pet) : res.status(404).end()))
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };
 
-const registerPet = async (req, res) => {
+const registerPet = async (req, res, next) => {
   const content = req.body;
   const { userId } = req;
 
@@ -39,12 +42,42 @@ const registerPet = async (req, res) => {
 
     res.json(savedPet);
   } catch (err) {
-    console.error(err);
+    next(err);
   }
+};
+
+const modifyPet = (req, res, next) => {
+  const { id } = req.params;
+  const { name, age, size, breed, sex, img } = req.body;
+
+  const newPet = {
+    name,
+    age,
+    size,
+    breed,
+    sex,
+    img,
+  };
+
+  Pet.findByIdAndUpdate(id, newPet, { new: true })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(next);
+};
+
+const deletePet = (req, res, next) => {
+  const { id } = req.params;
+
+  Pet.findByIdAndRemove(id).then((result) =>
+    result === null ? res.sendStatus(404) : res.status(204).end()
+  );
 };
 
 module.exports = {
   getAllPets,
   getPetById,
   registerPet,
+  modifyPet,
+  deletePet,
 };
