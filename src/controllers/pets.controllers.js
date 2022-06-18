@@ -4,8 +4,8 @@ const Institution = require('../models/Institution');
 
 const getAllPets = async (req, res) => {
   const pet = await Pet.find({})
-    .populate('institution', { uploadedPets: 0, adoptedPets: 0 })
-    .populate('owner', { uploadedPets: 0, adoptedPets: 0 });
+    .populate('institution', { uploadedPets: 0 })
+    .populate('owner', { adoptedPets: 0 });
 
   res.json(pet);
 };
@@ -64,7 +64,6 @@ const adoptPet = async (req, res, next) => {
 
 const modifyPet = (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
   const { name, born, size, activity, gender, description, img } = req.body;
 
   const newPet = {
@@ -79,7 +78,6 @@ const modifyPet = (req, res, next) => {
 
   Pet.findByIdAndUpdate(id, newPet, { new: true })
     .then((result) => {
-      console.log(result);
       res.json(result);
     })
     .catch(next);

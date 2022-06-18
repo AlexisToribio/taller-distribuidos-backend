@@ -2,13 +2,13 @@ const User = require('../models/User');
 const Institution = require('../models/Institution');
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({}).populate('adoptedPets', { user: 0 });
+  const users = await User.find({}).populate('adoptedPets', { owner: 0 });
   res.json(users);
 };
 
 const getAllInstitution = async (req, res) => {
   const users = await Institution.find({}).populate('uploadedPets', {
-    user: 0,
+    institution: 0,
   });
   res.json(users);
 };

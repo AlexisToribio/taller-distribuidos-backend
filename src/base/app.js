@@ -17,8 +17,8 @@ app.use(express.json());
 app.set('port', env.PORT);
 
 app.use('/', indexRoutes);
-app.use('/pets', petsRoutes);
 app.use('/auth', authRoutes);
+app.use('/pets', petsRoutes);
 app.use('/user', userRoutes);
 
 app.use(notFound);
