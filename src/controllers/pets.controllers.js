@@ -14,10 +14,7 @@ const getPetById = (req, res, next) => {
 
   Pet.findById(id)
     .then((pet) => (pet ? res.json(pet) : res.status(404).end()))
-    .catch((err) => {
-      console.log(err);
-      next(err);
-    });
+    .catch((err) => next(err));
 };
 
 const registerPet = async (req, res, next) => {
@@ -69,7 +66,7 @@ const modifyPet = (req, res, next) => {
 const deletePet = (req, res, next) => {
   const { id } = req.params;
 
-  Pet.findByIdAndRemove(id).then((result) =>
+  Pet.findByIdAndDelete(id).then((result) =>
     result === null ? res.sendStatus(404) : res.status(204).end()
   );
 };
