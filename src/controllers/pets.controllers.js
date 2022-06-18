@@ -64,11 +64,11 @@ const adoptPet = async (req, res, next) => {
 
 const modifyPet = (req, res, next) => {
   const { id } = req.params;
-  const { name, born, size, activity, gender, description, img } = req.body;
+  const { name, date, size, activity, gender, description, img } = req.body;
 
   const newPet = {
     name,
-    born,
+    date,
     size,
     activity,
     gender,

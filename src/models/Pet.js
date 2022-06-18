@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const petSchema = new Schema({
   codigo: {
     type: String,
-    require: true,
+    required: true,
   },
   name: {
     type: String,
@@ -12,13 +12,9 @@ const petSchema = new Schema({
     min: 1,
     max: 50,
   },
-  born: {
-    type: String,
-    required: true,
-  },
   date: {
     type: String,
-    require: true,
+    required: true,
   },
   size: {
     type: String,
@@ -41,7 +37,7 @@ const petSchema = new Schema({
   },
   description: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
     min: 1,
     max: 255,

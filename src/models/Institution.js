@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const institutionSchema = new Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
@@ -21,7 +21,7 @@ const institutionSchema = new Schema({
   },
   address: {
     type: String,
-    require: true,
+    required: true,
   },
   uploadedPets: [
     {
