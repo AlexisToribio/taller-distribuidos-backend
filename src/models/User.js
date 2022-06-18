@@ -15,6 +15,7 @@ const userSchema = new Schema({
     min: 1,
     max: 50,
   },
+
   email: {
     type: String,
     required: true,
@@ -23,13 +24,23 @@ const userSchema = new Schema({
     min: 5,
     max: 150,
   },
+  institution: {
+    type: Schema.Types.ObjectId,
+    ref: 'Institution',
+  },
   password: {
     type: String,
     required: true,
     min: 8,
     max: 255,
   },
-  pets: [
+  uploadedPets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Pet',
+    },
+  ],
+  adoptedPets: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Pet',

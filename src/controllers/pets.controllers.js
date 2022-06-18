@@ -2,9 +2,9 @@ const Pet = require('../models/Pet');
 const User = require('../models/User');
 
 const getAllPets = async (req, res) => {
-  const pet = await Pet.find({}).populate('user', {
-    pets: 0,
-  });
+  const pet = await Pet.find({})
+    .populate('user', { uploadedPets: 0, adoptedPets: 0 })
+    .populate('owner', { uploadedPets: 0, adoptedPets: 0 });
 
   res.json(pet);
 };
@@ -34,10 +34,28 @@ const registerPet = async (req, res, next) => {
   try {
     const savedPet = await newPet.save();
 
-    user.pets = user.pets.concat(savedPet._id);
+    user.uploadedPets = user.uploadedPets.concat(savedPet._id);
     await user.save();
 
     res.json(savedPet);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const adoptPet = async (req, res, next) => {
+  const { id } = req.params;
+  const { userId } = req;
+
+  const pet = await Pet.findById(id);
+  const user = await User.findById(userId);
+
+  try {
+    user.adoptedPets = user.adoptedPets.concat(pet._id);
+    pet.owner = userId;
+    await user.save();
+    await pet.save();
+    res.json({ message: 'Adopción exitosa' });
   } catch (err) {
     next(err);
   }
@@ -75,6 +93,7 @@ module.exports = {
   getAllPets,
   getPetById,
   registerPet,
+  adoptPet,
   modifyPet,
   deletePet,
 };
