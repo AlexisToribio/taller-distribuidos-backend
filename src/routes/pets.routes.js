@@ -16,10 +16,10 @@ petsRouter.get('/:id', getPetById);
 
 petsRouter.post('/register', validateUser, registerPet);
 
-petsRouter.post('/:id/adopt', validateUser, adoptPet);
+petsRouter.post('/:id', validateUser, adoptPet);
 
-petsRouter.put('/:id/edit', validateUser, modifyPet);
+petsRouter.put('/:id', validateUser, modifyPet);
 
-petsRouter.delete('/:id/delete', validateUser, deletePet);
+petsRouter.delete('/:id', validateUser, deletePet);
 
 module.exports = petsRouter;

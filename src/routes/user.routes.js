@@ -10,6 +10,6 @@ userRouter.get('/', getAllUsers);
 
 userRouter.get('/:id', getUserById);
 
-userRouter.put('/:id/edit', validateUser, modifyUser);
+userRouter.put('/:id', validateUser, modifyUser);
 
 module.exports = userRouter;
