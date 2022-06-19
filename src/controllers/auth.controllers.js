@@ -5,7 +5,8 @@ const env = require('../base/env');
 const jwt = require('jsonwebtoken');
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  try{
+    const { email, password } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -31,6 +32,9 @@ const loginUser = async (req, res) => {
     email: user.email,
     token,
   });
+  }catch(err){
+    next(err)
+  }
 };
 
 const loginInstitution = async (req, res) => {
@@ -65,6 +69,7 @@ const loginInstitution = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
+ try{
   const { firstname, lastname, email, password } = req.body;
 
   saltRounds = 10;
@@ -80,6 +85,9 @@ const registerUser = async (req, res) => {
   const savedUser = await user.save();
 
   res.status(201).json(savedUser);
+ }catch(err){
+  next(err)
+ }
 };
 
 const registerInstitution = async (req, res) => {
