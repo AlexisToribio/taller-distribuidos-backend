@@ -2,19 +2,27 @@ const Pet = require('../models/Pet');
 const User = require('../models/User');
 const Institution = require('../models/Institution');
 
-const getAllPets = async (req, res) => {
-  const pet = await Pet.find({})
-    .populate('institution', { uploadedPets: 0 })
-    .populate('owner', { adoptedPets: 0 });
+const getAllPets = async (req, res, next) => {
+  try {
+    const pet = await Pet.find({})
+      .populate('institution', { uploadedPets: 0 })
+      .populate('owner', { adoptedPets: 0 });
 
-  res.json(pet);
+    res.json(pet);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getPetById = (req, res, next) => {
   const { id } = req.params;
 
   Pet.findById(id)
-    .then((pet) => (pet ? res.json(pet) : res.status(404).end()))
+    .then((pet) =>
+      pet
+        ? res.json(pet)
+        : res.status(404).json({ error: 'Mascota no encontrada' }).end()
+    )
     .catch((err) => next(err));
 };
 
@@ -47,10 +55,9 @@ const adoptPet = async (req, res, next) => {
   const { id } = req.params;
   const { userId } = req;
 
-  const pet = await Pet.findById(id);
-  const user = await User.findById(userId);
-
   try {
+    const pet = await Pet.findById(id);
+    const user = await User.findById(userId);
     user.adoptedPets = user.adoptedPets.concat(pet._id);
     pet.owner = userId;
     await user.save();
@@ -85,9 +92,11 @@ const modifyPet = (req, res, next) => {
 const deletePet = (req, res, next) => {
   const { id } = req.params;
 
-  Pet.findByIdAndDelete(id).then((result) =>
-    result === null ? res.sendStatus(404) : res.status(204).end()
-  );
+  Pet.findByIdAndDelete(id)
+    .then((result) =>
+      result === null ? res.sendStatus(404) : res.status(204).end()
+    )
+    .catch(next);
 };
 
 module.exports = {
