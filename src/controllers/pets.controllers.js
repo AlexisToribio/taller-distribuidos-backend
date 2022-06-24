@@ -1,6 +1,7 @@
 const Pet = require('../models/Pet');
 const User = require('../models/User');
 const Institution = require('../models/Institution');
+const { petRegisterSchema, petModifySchema } = require('../utils/validations');
 
 const getAllPets = async (req, res, next) => {
   try {
@@ -27,10 +28,12 @@ const getPetById = (req, res, next) => {
 };
 
 const registerPet = async (req, res, next) => {
-  const content = req.body;
-  const { userId } = req;
-
   try {
+    await petRegisterSchema.validate(req.body);
+
+    const content = req.body;
+    const { userId } = req;
+
     const institution = await Institution.findById(userId);
     if (!content) {
       return res.status(400).json({
@@ -68,25 +71,30 @@ const adoptPet = async (req, res, next) => {
   }
 };
 
-const modifyPet = (req, res, next) => {
-  const { id } = req.params;
-  const { name, date, size, activity, gender, description, img } = req.body;
+const modifyPet = async (req, res, next) => {
+  try {
+    await petModifySchema.validate(req.body);
 
-  const newPet = {
-    name,
-    date,
-    size,
-    activity,
-    gender,
-    description,
-    img,
-  };
+    const { id } = req.params;
+    const { name, date, size, activity, gender, description, img } = req.body;
 
-  Pet.findByIdAndUpdate(id, newPet, { new: true })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch(next);
+    const newPet = {
+      name,
+      date,
+      size,
+      activity,
+      gender,
+      description,
+      img,
+    };
+    Pet.findByIdAndUpdate(id, newPet, { new: true })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch(next);
+  } catch (err) {
+    next(err);
+  }
 };
 
 const deletePet = (req, res, next) => {

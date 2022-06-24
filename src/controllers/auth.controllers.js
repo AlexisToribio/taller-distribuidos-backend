@@ -3,10 +3,16 @@ const Institution = require('../models/Institution');
 const bcrypt = require('bcrypt');
 const env = require('../base/env');
 const jwt = require('jsonwebtoken');
+const {
+  userRegisterSchema,
+  institutionRegisterSchema,
+  loginSchema,
+} = require('../utils/validations');
 
 const loginUser = async (req, res, next) => {
-  const { email, password } = req.body;
   try {
+    await loginSchema.validate(req.body);
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     const passwordCorrect =
@@ -37,8 +43,10 @@ const loginUser = async (req, res, next) => {
 };
 
 const loginInstitution = async (req, res, next) => {
-  const { email, password } = req.body;
   try {
+    await loginSchema.validate(req.body);
+
+    const { email, password } = req.body;
     const institution = await Institution.findOne({ email });
 
     const passwordCorrect =
@@ -71,9 +79,9 @@ const loginInstitution = async (req, res, next) => {
 };
 
 const registerUser = async (req, res, next) => {
-  const { firstname, lastname, email, password } = req.body;
-
   try {
+    await userRegisterSchema.validate(req.body);
+    const { firstname, lastname, email, password } = req.body;
     const userFound = await User.findOne({ email });
     if (userFound)
       return res
@@ -99,8 +107,9 @@ const registerUser = async (req, res, next) => {
 };
 
 const registerInstitution = async (req, res, next) => {
-  const { name, address, email, password } = req.body;
   try {
+    await institutionRegisterSchema.validate(req.body);
+    const { name, address, email, password } = req.body;
     const userFound = await Institution.findOne({ email });
     if (userFound)
       return res

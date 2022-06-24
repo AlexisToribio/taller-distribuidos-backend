@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Institution = require('../models/Institution');
+const { userModifySchema } = require('../utils/validations');
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -46,17 +47,22 @@ const getInstitutionById = async (req, res, next) => {
 };
 
 const modifyUser = async (req, res, next) => {
-  const { id } = req.params;
-  const { firstname, lastname } = req.body;
+  try {
+    await userModifySchema.validate(req.body);
+    const { id } = req.params;
+    const { firstname, lastname } = req.body;
 
-  const newUser = {
-    firstname,
-    lastname,
-  };
+    const newUser = {
+      firstname,
+      lastname,
+    };
 
-  User.findByIdAndUpdate(id, newUser, { new: true })
-    .then((user) => res.json(user))
-    .catch(next);
+    User.findByIdAndUpdate(id, newUser, { new: true })
+      .then((user) => res.json(user))
+      .catch(next);
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports = {
