@@ -11,7 +11,7 @@ const {
 
 const loginUser = async (req, res, next) => {
   try {
-    await loginSchema.validate(req.body);
+    await loginSchema.validate(req.body, { abortEarly: false });
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
@@ -44,7 +44,7 @@ const loginUser = async (req, res, next) => {
 
 const loginInstitution = async (req, res, next) => {
   try {
-    await loginSchema.validate(req.body);
+    await loginSchema.validate(req.body, { abortEarly: false });
 
     const { email, password } = req.body;
     const institution = await Institution.findOne({ email });
@@ -80,7 +80,7 @@ const loginInstitution = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   try {
-    await userRegisterSchema.validate(req.body);
+    await userRegisterSchema.validate(req.body, { abortEarly: false });
     const { firstname, lastname, email, password } = req.body;
     const userFound = await User.findOne({ email });
     if (userFound)
@@ -108,7 +108,7 @@ const registerUser = async (req, res, next) => {
 
 const registerInstitution = async (req, res, next) => {
   try {
-    await institutionRegisterSchema.validate(req.body);
+    await institutionRegisterSchema.validate(req.body, { abortEarly: false });
     const { name, address, email, password } = req.body;
     const userFound = await Institution.findOne({ email });
     if (userFound)

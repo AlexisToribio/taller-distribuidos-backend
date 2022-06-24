@@ -29,7 +29,7 @@ const getPetById = (req, res, next) => {
 
 const registerPet = async (req, res, next) => {
   try {
-    await petRegisterSchema.validate(req.body);
+    await petRegisterSchema.validate(req.body, { abortEarly: false });
 
     const content = req.body;
     const { userId } = req;
@@ -73,7 +73,7 @@ const adoptPet = async (req, res, next) => {
 
 const modifyPet = async (req, res, next) => {
   try {
-    await petModifySchema.validate(req.body);
+    await petModifySchema.validate(req.body, { abortEarly: false });
 
     const { id } = req.params;
     const { name, date, size, activity, gender, description, img } = req.body;
