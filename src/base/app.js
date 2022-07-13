@@ -5,9 +5,10 @@ const env = require('./env');
 
 const app = express();
 const indexRoutes = require('../routes/index.routes');
-const petsRoutes = require('../routes/pets.routes');
 const authRoutes = require('../routes/auth.routes');
+const petsRoutes = require('../routes/pets.routes');
 const userRoutes = require('../routes/user.routes');
+const requestRoutes = require('../routes/request.routes');
 const notFound = require('../middlewares/notFound');
 const handleErrors = require('../middlewares/handleErrors');
 
@@ -20,6 +21,7 @@ app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 app.use('/pets', petsRoutes);
 app.use('/user', userRoutes);
+app.use('/request', requestRoutes);
 
 app.use(notFound);
 app.use(handleErrors);

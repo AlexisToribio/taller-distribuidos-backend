@@ -13,7 +13,6 @@ const userModifySchema = yup.object().shape({
   lastname: yup.string().min(1).max(100),
   email: yup.string().email().min(5).max(150),
   password: yup.string().min(8).max(255),
-  adoptedPets: yup.array(),
 });
 
 const institutionRegisterSchema = yup.object().shape({
@@ -59,8 +58,21 @@ const petModifySchema = yup.object().shape({
   gender: yup.string().strict(),
   description: yup.string().min(1).max(255),
   img: yup.string(),
-  institution: yup.string(),
-  owner: yup.string(),
+});
+
+const requestSchema = yup.object().shape({
+  address: yup.string().min(1).max(255).required(),
+  phone: yup.string().min(1).max(20).required(),
+  country: yup.string().min(1).max(50).required(),
+  postal: yup.string().min(1).max(50).required(),
+  application_date: yup.string().required(),
+  check_date: yup.string(),
+  status: yup.string(),
+});
+
+const checkRequestSchema = yup.object().shape({
+  status: yup.string().required(),
+  check_date: yup.string().required(),
 });
 
 module.exports = {
@@ -71,4 +83,6 @@ module.exports = {
   petModifySchema,
   userModifySchema,
   institutionModifySchema,
+  requestSchema,
+  checkRequestSchema,
 };

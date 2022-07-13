@@ -13,6 +13,7 @@ const ERROR_HANDLERS = {
 };
 
 const handleErrors = (error, req, res, next) => {
+  console.log(error);
   const handler = ERROR_HANDLERS[error.name] || ERROR_HANDLERS.defaultError;
 
   handler(res, error);

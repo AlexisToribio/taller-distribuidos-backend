@@ -1,7 +1,12 @@
 const Pet = require('../models/Pet');
 const User = require('../models/User');
+const Request = require('../models/Request');
 const Institution = require('../models/Institution');
-const { petRegisterSchema, petModifySchema } = require('../utils/validations');
+const {
+  petRegisterSchema,
+  petModifySchema,
+  requestSchema,
+} = require('../utils/validations');
 
 const getAllPets = async (req, res, next) => {
   try {
@@ -54,23 +59,6 @@ const registerPet = async (req, res, next) => {
   }
 };
 
-const adoptPet = async (req, res, next) => {
-  const { id } = req.params;
-  const { userId } = req;
-
-  try {
-    const pet = await Pet.findById(id);
-    const user = await User.findById(userId);
-    user.adoptedPets = user.adoptedPets.concat(pet._id);
-    pet.owner = userId;
-    await user.save();
-    await pet.save();
-    res.json({ message: 'Adopción exitosa' });
-  } catch (err) {
-    next(err);
-  }
-};
-
 const modifyPet = async (req, res, next) => {
   try {
     await petModifySchema.validate(req.body, { abortEarly: false });
@@ -107,11 +95,41 @@ const deletePet = (req, res, next) => {
     .catch(next);
 };
 
+const sendRequest = async (req, res, next) => {
+  try {
+    await requestSchema.validate(req.body, { abortEarly: true });
+    const { id } = req.params;
+    const content = req.body;
+    const { userId } = req;
+
+    const user = await User.findById(userId);
+
+    if (!content) {
+      return res.status(400).json({
+        error: 'no content',
+      });
+    }
+
+    const newRequest = new Request({
+      ...content,
+      user: user._id,
+      pet: id,
+      status: 'Pendiente',
+    });
+
+    const savedRequest = await newRequest.save();
+
+    res.json(savedRequest);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllPets,
   getPetById,
   registerPet,
-  adoptPet,
   modifyPet,
   deletePet,
+  sendRequest,
 };

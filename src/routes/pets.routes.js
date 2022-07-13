@@ -2,9 +2,9 @@ const {
   getAllPets,
   getPetById,
   registerPet,
-  adoptPet,
   modifyPet,
   deletePet,
+  sendRequest,
 } = require('../controllers/pets.controllers');
 const validateUser = require('../middlewares/validateUser');
 
@@ -16,7 +16,7 @@ petsRouter.get('/:id', getPetById);
 
 petsRouter.post('/register', validateUser, registerPet);
 
-petsRouter.post('/:id', validateUser, adoptPet);
+petsRouter.post('/:id/send-request', validateUser, sendRequest);
 
 petsRouter.put('/:id', validateUser, modifyPet);
 
