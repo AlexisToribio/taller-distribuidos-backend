@@ -23,6 +23,9 @@ const institutionSchema = new Schema({
     type: String,
     required: true,
   },
+  userType: {
+    type: String,
+  },
   uploadedPets: [
     {
       type: Schema.Types.ObjectId,

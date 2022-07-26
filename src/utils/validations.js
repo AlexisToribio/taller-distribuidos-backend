@@ -20,6 +20,7 @@ const institutionRegisterSchema = yup.object().shape({
   email: yup.string().email().min(5).max(150).required(),
   password: yup.string().min(8).max(255).required(),
   address: yup.string().min(1).max(100).required(),
+  userType: yup.string().required(),
   uploadedPets: yup.array(),
 });
 

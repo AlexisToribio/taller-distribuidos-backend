@@ -29,19 +29,11 @@ const getUserById = async (req, res, next) => {
     .then((user) =>
       user
         ? res.json(user)
-        : res.status(404).json({ error: 'Usuario no encontrado' }).end()
-    )
-    .catch(next);
-};
-
-const getInstitutionById = async (req, res, next) => {
-  const { id } = req.params;
-
-  Institution.findById(id)
-    .then((institution) =>
-      institution
-        ? res.json(institution)
-        : res.status(404).json({ error: 'Institución no encontrada' }).end()
+        : Institution.findById(id).then((institution) =>
+            institution
+              ? res.json(institution)
+              : res.status(404).json({ error: 'Usuario no encontrado' }).end()
+          )
     )
     .catch(next);
 };
@@ -67,22 +59,16 @@ const modifyUser = async (req, res, next) => {
 
 const getInfoUser = (req, res, next) => {
   const { userId } = req;
+
   User.findById(userId)
     .then((user) =>
       user
         ? res.json(user)
-        : res.status(404).json({ error: 'Usuario no encontrado' }).end()
-    )
-    .catch(next);
-};
-
-const getInfoInstitution = (req, res, next) => {
-  const { userId } = req;
-  Institution.findById(userId)
-    .then((institution) =>
-      institution
-        ? res.json(institution)
-        : res.status(404).json({ error: 'Institución no encontrado' }).end()
+        : Institution.findById(userId).then((institution) =>
+            institution
+              ? res.json(institution)
+              : res.status(404).json({ error: 'Usuario no encontrado' }).end()
+          )
     )
     .catch(next);
 };
@@ -91,8 +77,6 @@ module.exports = {
   getAllUsers,
   getAllInstitution,
   getUserById,
-  getInstitutionById,
   modifyUser,
   getInfoUser,
-  getInfoInstitution,
 };
