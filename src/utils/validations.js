@@ -45,6 +45,7 @@ const petRegisterSchema = yup.object().shape({
   activity: yup.string().strict().required(),
   gender: yup.string().strict().required(),
   description: yup.string().min(1).max(255).required(),
+  history: yup.string().min(1).max(255).required(),
   img: yup.string().required(),
   institution: yup.string(),
   owner: yup.string(),
@@ -58,6 +59,7 @@ const petModifySchema = yup.object().shape({
   activity: yup.string().strict(),
   gender: yup.string().strict(),
   description: yup.string().min(1).max(255),
+  history: yup.string().min(1).max(255),
   img: yup.string(),
 });
 

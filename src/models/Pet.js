@@ -42,6 +42,12 @@ const petSchema = new Schema({
     min: 1,
     max: 255,
   },
+  history: {
+    type: String,
+    trim: true,
+    min: 1,
+    max: 255,
+  },
   img: {
     type: String,
     required: true,
