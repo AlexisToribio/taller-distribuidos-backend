@@ -70,7 +70,7 @@ const modifyInstitution = async (req, res, next) => {
     const { id } = req.params;
     const { name, img, phone, address } = req.body;
 
-    const newUser = {
+    const newInstitution = {
       name,
       img,
       phone,
@@ -78,8 +78,8 @@ const modifyInstitution = async (req, res, next) => {
       updatedAt: new Date().toLocaleString(),
     };
 
-    User.findByIdAndUpdate(id, newUser, { new: true })
-      .then((user) => res.json(user))
+    Institution.findByIdAndUpdate(id, newInstitution, { new: true })
+      .then((institution) => res.json(institution))
       .catch(next);
   } catch (err) {
     next(err);
