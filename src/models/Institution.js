@@ -13,11 +13,23 @@ const institutionSchema = new Schema({
     min: 5,
     max: 150,
   },
+  createdAt: {
+    type: String,
+  },
+  updatedAt: {
+    type: String,
+  },
   password: {
     type: String,
     required: true,
     min: 8,
     max: 255,
+  },
+  img: {
+    type: String,
+  },
+  phone: {
+    type: String,
   },
   address: {
     type: String,

@@ -64,6 +64,8 @@ const registerUser = async (req, res, next) => {
         address,
         email,
         password: passwordHash,
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
       });
 
       const savedInstitution = await institution.save();
@@ -86,6 +88,8 @@ const registerUser = async (req, res, next) => {
         lastname,
         email,
         password: passwordHash,
+        createdAt: new Date().toLocaleString(),
+        updatedAt: new Date().toLocaleString(),
       });
 
       const savedUser = await user.save();

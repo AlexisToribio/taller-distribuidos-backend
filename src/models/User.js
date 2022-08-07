@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { boolean } = require('yup');
 
 const userSchema = new Schema({
   firstname: {
@@ -15,6 +16,16 @@ const userSchema = new Schema({
     min: 1,
     max: 50,
   },
+  img: {
+    type: String,
+  },
+  phone: {
+    type: String,
+    trim: true,
+  },
+  sex: {
+    type: Boolean,
+  },
   email: {
     type: String,
     required: true,
@@ -22,6 +33,12 @@ const userSchema = new Schema({
     unique: true,
     min: 5,
     max: 150,
+  },
+  createdAt: {
+    type: String,
+  },
+  updatedAt: {
+    type: String,
   },
   password: {
     type: String,

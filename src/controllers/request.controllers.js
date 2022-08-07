@@ -60,8 +60,12 @@ const checkRequest = async (req, res, next) => {
 
 const getAllRequest = async (req, res, next) => {
   try {
+    const { userId } = req;
     const request = await Request.find({}).populate('user').populate('pet');
-    res.json(request);
+    const requestByInstitutionId = request.filter(
+      (re) => re.pet.institution.toString() === userId
+    );
+    res.json({ request: requestByInstitutionId });
   } catch (err) {
     next(err);
   }

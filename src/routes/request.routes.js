@@ -5,7 +5,7 @@ const {
 } = require('../controllers/request.controllers');
 const validateUser = require('../middlewares/validateUser');
 
-requestRouter.get('/', getAllRequest);
+requestRouter.get('/', validateUser, getAllRequest);
 
 requestRouter.post('/:id/check', validateUser, checkRequest);
 

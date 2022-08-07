@@ -32,6 +32,23 @@ const getPetById = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+const getPetByInstitutionId = async (req, res, next) => {
+  try {
+    const { userId } = req;
+    const pet = await Pet.find({})
+      .populate('institution', { uploadedPets: 0 })
+      .populate('owner', { adoptedPets: 0 });
+    console.log(pet);
+    const petByInstitutionId = pet.filter(
+      (re) => re.institution._id.toString() === userId
+    );
+
+    res.json({ pet: petByInstitutionId });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const registerPet = async (req, res, next) => {
   try {
     await petRegisterSchema.validate(req.body, { abortEarly: false });
@@ -46,7 +63,12 @@ const registerPet = async (req, res, next) => {
       });
     }
 
-    const newPet = new Pet({ ...content, institution: institution._id });
+    const newPet = new Pet({
+      ...content,
+      institution: institution._id,
+      createdAt: new Date().toLocaleString(),
+      uptatedAt: new Date().toLocaleString(),
+    });
 
     const savedPet = await newPet.save();
 
@@ -64,7 +86,16 @@ const modifyPet = async (req, res, next) => {
     await petModifySchema.validate(req.body, { abortEarly: false });
 
     const { id } = req.params;
-    const { name, date, size, activity, gender, description, img } = req.body;
+    const {
+      name,
+      date,
+      size,
+      activity,
+      gender,
+      description,
+      img,
+      otherDetails = '',
+    } = req.body;
 
     const newPet = {
       name,
@@ -74,6 +105,8 @@ const modifyPet = async (req, res, next) => {
       gender,
       description,
       img,
+      otherDetails,
+      updatedAt: new Date().toLocaleString(),
     };
     Pet.findByIdAndUpdate(id, newPet, { new: true })
       .then((result) => {
@@ -128,6 +161,7 @@ const sendRequest = async (req, res, next) => {
 module.exports = {
   getAllPets,
   getPetById,
+  getPetByInstitutionId,
   registerPet,
   modifyPet,
   deletePet,

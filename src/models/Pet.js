@@ -45,8 +45,6 @@ const petSchema = new Schema({
   history: {
     type: String,
     trim: true,
-    min: 1,
-    max: 255,
   },
   img: {
     type: String,
@@ -59,6 +57,15 @@ const petSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+  },
+  createdAt: {
+    type: String,
+  },
+  updatedAt: {
+    type: String,
+  },
+  otherDetails: {
+    type: String,
   },
 });
 

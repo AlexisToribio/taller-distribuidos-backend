@@ -1,6 +1,7 @@
 const {
   getAllPets,
   getPetById,
+  getPetByInstitutionId,
   registerPet,
   modifyPet,
   deletePet,
@@ -11,6 +12,8 @@ const validateUser = require('../middlewares/validateUser');
 const petsRouter = require('express').Router();
 
 petsRouter.get('/', getAllPets);
+
+petsRouter.get('/institution', validateUser, getPetByInstitutionId);
 
 petsRouter.get('/:id', getPetById);
 
