@@ -3,8 +3,8 @@ const {
   getAllUsers,
   getAllInstitution,
   getUserById,
-  getInstitutionById,
   modifyUser,
+  modifyInstitution,
   getInfoUser,
 } = require('../controllers/user.controllers');
 const validateUser = require('../middlewares/validateUser');
@@ -16,6 +16,8 @@ userRouter.get('/info', validateUser, getInfoUser);
 userRouter.get('/institution', getAllInstitution);
 
 userRouter.get('/:id', getUserById);
+
+userRouter.put('/institution/:id', validateUser, modifyInstitution);
 
 userRouter.put('/:id', validateUser, modifyUser);
 
