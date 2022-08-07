@@ -39,8 +39,6 @@ const petSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    min: 1,
-    max: 255,
   },
   history: {
     type: String,
