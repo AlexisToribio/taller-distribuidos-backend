@@ -66,8 +66,8 @@ const registerPet = async (req, res, next) => {
     const newPet = new Pet({
       ...content,
       institution: institution._id,
-      createdAt: new Date().toLocaleString(),
-      uptatedAt: new Date().toLocaleString(),
+      createdAt: new Date(Date.now()).toLocaleString(),
+      uptatedAt: new Date(Date.now()).toLocaleString(),
     });
 
     const savedPet = await newPet.save();
@@ -108,7 +108,7 @@ const modifyPet = async (req, res, next) => {
       description,
       img,
       otherDetails,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: new Date(Date.now()).toLocaleString(),
     };
     Pet.findByIdAndUpdate(id, newPet, { new: true })
       .then((result) => {

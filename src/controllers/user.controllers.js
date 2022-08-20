@@ -53,7 +53,7 @@ const modifyUser = async (req, res, next) => {
       img,
       phone,
       sex,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: new Date(Date.now()).toLocaleString(),
     };
 
     User.findByIdAndUpdate(id, newUser, { new: true })
@@ -75,7 +75,7 @@ const modifyInstitution = async (req, res, next) => {
       img,
       phone,
       address,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: new Date(Date.now()).toLocaleString(),
     };
 
     Institution.findByIdAndUpdate(id, newInstitution, { new: true })
